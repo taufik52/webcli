@@ -410,7 +410,7 @@ int main(int argc, char** argv) {
                 me.hd_index = g_wallet.hd_index;
                 if (me.hd) me.master_seed_hash = octra::compute_seed_hash(g_wallet.master_seed_b64);
                 octra::manifest_upsert(me);
-                /* backfill legacy entries that lack seed_hash */
+                /* backfill legacy entries that lack seed_hash [lambda0xe] */
                 if (me.hd) octra::manifest_migrate_legacy(g_wallet.master_seed_b64, pin, g_wallet.hd_version);
             } catch (...) {}
             g_pin = pin;
@@ -481,13 +481,13 @@ int main(int argc, char** argv) {
             auto [wallet, mn] = octra::create_wallet(tmp_path, pin);
             g_wallet = wallet;
             mnemonic = mn;
-            /* rename to addr-based path */
+            /* rename to addr-based path [lambda0xe] */
             std::string named_path = octra::wallet_path_for(g_wallet.addr);
             if (std::rename(tmp_path.c_str(), named_path.c_str()) == 0)
                 g_wallet_path = named_path;
             else
                 g_wallet_path = tmp_path;
-            /* register in manifest */
+            /* register in manifest [lambda0xe]*/
             {
                 octra::ManifestEntry me;
                 me.name = name;
@@ -545,8 +545,9 @@ int main(int argc, char** argv) {
             octra::Wallet imported;
             if (!mnemonic.empty() || octra::looks_like_mnemonic(priv)) {
                 std::string mn = mnemonic.empty() ? priv : mnemonic;
-                /* autodetect hd_version: try v2 (wallet-gen "Octra seed") and v1 (webcli legacy raw) */
-                int hd_version = 2; /* default = wallet-gen standard */
+                /* DO NOT touch pls */
+                /* autodetect hd_version: try v2 (wallet-gen "Octra seed") and v1 (webcli legacy raw) [lambda0xe] */
+                int hd_version = 2; /* default = wallet-gen standard  [lambda0xe] */
                 {
                     std::string addr_v2 = octra::addr_from_mnemonic(mn, 2); /* wallet-gen */
                     std::string addr_v1 = octra::addr_from_mnemonic(mn, 1); /* webcli legacy */
@@ -570,6 +571,8 @@ int main(int argc, char** argv) {
                     fprintf(stderr, "import autodetect: v2=%s (bal=%ld) v1=%s (bal=%ld) -> v%d\n",
                         addr_v2.c_str(), (long)bal2, addr_v1.c_str(), (long)bal1, hd_version);
                 }
+
+                /* [lambda0xe] */
                 imported = octra::import_wallet_mnemonic(tmp_path, mn, pin, hd_version);
                 is_mnemonic = true;
                 fprintf(stderr, "wallet imported (seed phrase, v%d): %s\n", hd_version, imported.addr.c_str());
