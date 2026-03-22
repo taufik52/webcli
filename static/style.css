@@ -1301,13 +1301,11 @@ td {
 .storage-key { color: #569cd6; min-width: 200px; margin-right: 12px; }
 .storage-val { color: #ce9178; word-break: break-all; }
 
-/* --- bottom panel empty state --- */
 .panel-empty {
   color: #555; font-size: 11px; padding: 16px; text-align: center;
   font-style: italic;
 }
 
-/* --- template select inline --- */
 #ct-template {
   padding: 4px 24px 4px 8px;
   text-align: center;
@@ -1325,7 +1323,6 @@ td {
 }
 #ct-template:focus { border-color: #3B567F; }
 
-/* --- custom modal --- */
 .modal-overlay {
   position: fixed; top: 0; left: 0; right: 0; bottom: 0;
   background: rgba(0,0,0,0.35); z-index: 9999;
